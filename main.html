@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="script.js"></script>
+    <title></title>
+  </head>
+  <body>
+    <p>Google Calendar API Quickstart</p>
+
+    <!--Add buttons to initiate auth sequence and sign out-->
+    <button id="authorize_button" onclick="calendar.handleAuthClick()">
+      Authorize
+    </button>
+    <button id="signout_button" onclick="calendar.handleSignoutClick()">
+      Sign Out
+    </button>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <pre id="content" style="white-space: pre-wrap"></pre>
+
+    <div id="mainContainer">
+      <table>
+        <tr>
+          <th>Sunday</th>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
+        </tr>
+        <tr>
+          <td id="sunContent"></td>
+          <td id="monContent"></td>
+          <td id="tuesContent"></td>
+          <td id="wedContent"></td>
+          <td id="thurContent"></td>
+          <td id="friContent"></td>
+          <td id="satContent"></td>
+        </tr>
+
+        <tr></tr>
+      </table>
+    </div>
+  </body>
+</html>
