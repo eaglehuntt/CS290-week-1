@@ -15,7 +15,7 @@ const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
 
 let calendar;
 
-class GoogleCalendar {
+class Calendar {
   constructor(client_id, api_key, discovery_doc, scopes) {
     this.client_id = client_id;
     this.api_key = api_key;
@@ -25,6 +25,100 @@ class GoogleCalendar {
     this.tokenClient;
     this.gapiInited = false;
     this.gisInited = false;
+
+    this.days = ["sun", "mon", "tues", "wed", "thur", "fri", "sat"];
+    this.dates = [];
+
+    this.content = {
+      sun: [],
+      mon: [],
+      tues: [],
+      wed: [],
+      thur: [],
+      fri: [],
+      sat: [],
+    };
+  }
+
+  getCalendarDates() {
+    this.currentDate = new Date(); // get current date
+    let currentDate2 = new Date(this.currentDate);
+
+    const firstDateOfTheWeek = currentDate2.getDate() - currentDate2.getDay(); // day of the month - the day of the week
+
+    const startOfWeek = new Date(
+      currentDate2.setDate(firstDateOfTheWeek)
+    ).toUTCString();
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(startOfWeek);
+      date.setDate(date.getDate() + i);
+      this.dates[i] = date;
+    }
+  }
+
+  getCalendarContent() {
+    const isEventInWeek = (date1, date2) => {
+      const trimmedDate1 = new Date(date1);
+      trimmedDate1.setHours(0, 0, 0, 0);
+
+      const trimmedDate2 = new Date(date2);
+      trimmedDate2.setHours(0, 0, 0, 0);
+
+      return trimmedDate1.getTime() === trimmedDate2.getTime();
+    };
+
+    for (let i = 0; i < 7; i++) {
+      const date = this.dates[i];
+      for (const event of this.calendarEvents) {
+        let eventDate = new Date(event.start.dateTime);
+        if (isEventInWeek(eventDate, date)) {
+          this.content[this.days[i]].push(event);
+        }
+      }
+    }
+  }
+
+  setCalendarContent() {
+    this.getCalendarDates();
+    this.getCalendarContent();
+
+    for (let i = 0; i < 7; i++) {
+      const day = this.days[i];
+      const events = this.content[day];
+
+      const dayElement = document.getElementById(day);
+      dayElement.innerHTML = "";
+
+      const dateElement = document.createElement("div");
+      dateElement.classList.add("date");
+      dateElement.innerText = this.dates[i].getDate();
+
+      if (day == this.days[this.currentDate.getDay()]) {
+        dayElement.classList.add("today");
+      }
+
+      dayElement.appendChild(dateElement);
+
+      for (const event of events) {
+        const eventElement = document.createElement("div");
+        eventElement.classList.add("event");
+
+        // eventElement.innerText = event.summary;
+        // eventElement.innerText = event.start;
+        // eventElement.innerText = event.end;
+
+        // if (event.description != undefined) {
+        //   eventElement.innerText = event.description;
+        // } else {
+        //   eventElement.innerText = event.summary;
+        // }
+
+        eventElement.innerText = event.summary;
+
+        dayElement.appendChild(eventElement);
+      }
+    }
   }
 
   gapiLoaded() {
@@ -44,7 +138,6 @@ class GoogleCalendar {
   }
 
   async gisLoaded() {
-    console.log("gisLoaded");
     this.tokenClient = google.accounts.oauth2.initTokenClient({
       client_id: await this.client_id,
       scope: await this.scopes,
@@ -55,9 +148,7 @@ class GoogleCalendar {
   }
 
   maybeEnableButtons() {
-    console.log(this.gapiInited, this.gisInited);
     if (this.gapiInited && this.gisInited) {
-      console.log("working!!");
       document.getElementById("authorize_button").style.visibility = "visible";
     }
   }
@@ -71,7 +162,7 @@ class GoogleCalendar {
       document.getElementById("signout_button").style.visibility = "visible";
       document.getElementById("authorize_button").innerText = "Refresh";
 
-      await this.listUpcomingEvents();
+      await this.getGoogleCalendarEvents();
     };
 
     if (gapi.client.getToken() === null) {
@@ -95,7 +186,7 @@ class GoogleCalendar {
     }
   }
 
-  async listUpcomingEvents() {
+  async getGoogleCalendarEvents() {
     let response;
     try {
       const request = {
@@ -112,42 +203,29 @@ class GoogleCalendar {
       return;
     }
 
-    const events = response.result.items;
-    if (!events || events.length == 0) {
-      document.getElementById("content").innerText = "No events found.";
-      return;
-    }
-    // Flatten to string to display
-    const output = events.reduce(
-      (str, event) =>
-        `${str}${event.summary} (${
-          event.start.dateTime || event.start.date
-        })\n`,
-      "Events:\n"
-    );
-    document.getElementById("content").innerText = output;
+    this.calendarEvents = response.result.items;
+    this.setCalendarContent();
   }
 }
 
 async function createCalendarObject() {
   const secrets = await SECRETS;
 
-  calendar = new GoogleCalendar(
+  calendar = new Calendar(
     await secrets.web.client_id,
     await secrets.api_key,
     DISCOVERY_DOC,
     SCOPES
   );
 
-  console.log(calendar);
   return calendar;
 }
 
 async function initializeApp() {
   await createCalendarObject();
-  if (typeof gapi !== "undefined") {
-    calendar.gapiLoaded();
-    calendar.gisLoaded();
+  if (typeof gapi !== undefined) {
+    await calendar.gapiLoaded();
+    await calendar.gisLoaded();
   } else {
     console.error("Google API script not loaded.");
   }

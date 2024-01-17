@@ -1,0 +1,40 @@
+#mainContainer {
+  display: flex;
+  border: 2px solid;
+  justify-content: space-between;
+  margin: auto;
+  border-radius: 15px;
+  position: relative;
+  top: 0%;
+  width: 100%;
+}
+
+.dayContainer {
+  width: 100vh;
+  height: 6vh;
+}
+
+.taskContainer {
+  position: relative;
+  height: 75vh;
+  max-width: 14.2%;
+  min-width: 14.2%;
+  border: 2px solid;
+}
+
+.event {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  display: block;
+}
+
+.today {
+  background-color: lightyellow;
+}
+
+.date {
+  color: red;
+  position: absolute;
+  top: 0;
+}

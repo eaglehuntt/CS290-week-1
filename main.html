@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="script.js"></script>
+    <link rel="stylesheet" href="styles.css"></link>
     <title></title>
   </head>
   <body>
-    <p>Google Calendar API Quickstart</p>
+    <p>Google Calendar API</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="calendar.handleAuthClick()">
@@ -24,22 +25,22 @@
     <div id="mainContainer">
       <table>
         <tr>
-          <th>Sunday</th>
-          <th>Monday</th>
-          <th>Tuesday</th>
-          <th>Wednesday</th>
-          <th>Thursday</th>
-          <th>Friday</th>
-          <th>Saturday</th>
+          <th class="dayContainer">Sunday</th>
+          <th class="dayContainer">Monday</th>
+          <th class="dayContainer">Tuesday</th>
+          <th class="dayContainer">Wednesday</th>
+          <th class="dayContainer">Thursday</th>
+          <th class="dayContainer">Friday</th>
+          <th class="dayContainer">Saturday</th>
         </tr>
         <tr>
-          <td id="sunContent"></td>
-          <td id="monContent"></td>
-          <td id="tuesContent"></td>
-          <td id="wedContent"></td>
-          <td id="thurContent"></td>
-          <td id="friContent"></td>
-          <td id="satContent"></td>
+          <td class="taskContainer" id="sun"></td>
+          <td class="taskContainer" id="mon"></td>
+          <td class="taskContainer" id="tues"></td>
+          <td class="taskContainer" id="wed"></td>
+          <td class="taskContainer" id="thur"></td>
+          <td class="taskContainer" id="fri"></td>
+          <td class="taskContainer" id="sat"></td>
         </tr>
 
         <tr></tr>
