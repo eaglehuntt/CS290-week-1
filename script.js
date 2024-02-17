@@ -42,7 +42,10 @@ class Calendar {
 
   getCalendarDates() {
     this.currentDate = new Date(); // get current date
-    let currentDate2 = new Date(this.currentDate);
+    //console.log(this.currentDate);
+    let currentDate2 = new Date();
+
+    // make sure to test with time or else buggy : "2024-01-22T08:00:00"
 
     const firstDateOfTheWeek = currentDate2.getDate() - currentDate2.getDay(); // day of the month - the day of the week
 
