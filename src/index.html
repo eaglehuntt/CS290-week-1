@@ -21,20 +21,6 @@
                 <h1 id="heading">Calendar</h1>
             </div>
             
-            <div id="calendar-type-container">
-                <ul class="calendar-type">
-                <li class="" id="day-view">
-                    <button class="button">Day</button>
-                </li>
-                <li class="" id="week-view">
-                    <button class="button">Week</button>
-                </li>
-                <li class="" id="month-view">
-                    <button class="button">Month</button>
-                </li>
-                <li class="" id="year-view"><button class="button">Year</button></li>
-                </ul>
-            </div>
 
             <div id="sign-in-container">
                 <button id="sign-in-button" class="button" onclick="calendar.handleAuthClick()">Sign in</button>
@@ -45,6 +31,122 @@
                 </div>
             </div>
         </div>
+
+        <div id="main-container">
+
+            <div id="left-container" class="container">
+    
+                <button class="button" id="create-button">+ Create</button>
+                
+                <!-- Code modified from https://codepen.io/havardob/pen/eYdbewq -->
+    
+                <div class="datepicker">
+                    <div class="datepicker-top">
+                        <div class="month-selector">
+                            <button class="arrow"><i class="material-icons"><</i></button>
+                            <span class="month-name">December 2020</span>
+                            <button class="arrow"><i class="material-icons">></i></button>
+                        </div>
+                    </div>
+                    <div class="datepicker-calendar">
+                        <span class="day">Su</span>
+                        <span class="day">Mo</span>
+                        <span class="day">Tu</span>
+                        <span class="day">We</span>
+                        <span class="day">Th</span>
+                        <span class="day">Fr</span>
+                        <span class="day">Sa</span>
+                        <button class="date faded">30</button>
+                        <button class="date">1</button>
+                        <button class="date">2</button>
+                        <button class="date">3</button>
+                        <button class="date">4</button>
+                        <button class="date">5</button>
+                        <button class="date">6</button>
+                        <button class="date">7</button>
+                        <button class="date">8</button>
+                        <button class="date current-day">9</button>
+                        <button class="date">10</button>
+                        <button class="date">11</button>
+                        <button class="date">12</button>
+                        <button class="date">13</button>
+                        <button class="date">14</button>
+                        <button class="date">15</button>
+                        <button class="date">16</button>
+                        <button class="date">17</button>
+                        <button class="date">18</button>
+                        <button class="date">19</button>
+                        <button class="date">20</button>
+                        <button class="date">21</button>
+                        <button class="date">22</button>
+                        <button class="date">23</button>
+                        <button class="date">24</button>
+                        <button class="date">25</button>
+                        <button class="date">26</button>
+                        <button class="date">27</button>
+                        <button class="date">28</button>
+                        <button class="date">29</button>
+                        <button class="date">30</button>
+                        <button class="date">31</button>
+                        <button class="date faded">1</button>
+                        <button class="date faded">2</button>
+                        <button class="date faded">3</button>
+                    </div>
+                </div>
+    
+            </div>
+    
+            <div id="right-container" class="container">
+                <div class="times">
+                </div>
+                <div id="week-view-container">
+
+                    <div id="sunday">
+                        <div class="day-view-container">
+                            SUN
+                        </div>
+                        <div class="day-view-date"></div>
+                    </div>
+                    <div id="monday">
+                        <div class="day-view-container">
+                            MON
+                        </div>
+                        <div class="day-view-date"></div>
+                    </div>  
+                    <div id="tuesday">
+                        <div class="day-view-container">
+                            TUES
+                        </div>
+                        <div class="day-view-date"></div>
+                    </div>
+                    <div id="wednesday">
+                        <div class="day-view-container">
+                            WED
+                        </div>
+                        <div class="day-view-date"></div>
+                    </div>
+                    <div id="thursday">
+                        <div class="day-view-container">
+                            THUR
+                        </div>
+                        <div class="day-view-date"></div>
+                    </div>
+                    <div id="friday">
+                        <div class="day-view-container">
+                            FRI
+                        </div>
+                        <div class="day-view-date"></div>
+                    </div>
+                    <div id="saturday">
+                        <div class="day-view-container">
+                            SAT
+                        </div>
+                        <div class="day-view-date"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </body>
 
