@@ -146,6 +146,7 @@ class CalendarApp {
   maybeEnableButtons() {
     if (this.gapiInited && this.gisInited) {
       document.getElementById("sign-in-button").style.display = "block";
+      document.getElementById("profile-image-container").style.display = "none";
       document.getElementById("sign-out-button").style.display = "none";
     }
   }
@@ -156,7 +157,8 @@ class CalendarApp {
         throw resp;
       }
 
-      document.getElementById("sign-out-button").style.display = "block";
+      document.getElementById("profile-image-container").style.display =
+        "block";
       document.getElementById("sign-in-button").style.display = "none";
 
       // getting calendar content
@@ -181,7 +183,7 @@ class CalendarApp {
       gapi.client.setToken("");
       //   document.getElementById("content").innerText = "";
       document.getElementById("sign-in-button").style.display = "block";
-      document.getElementById("sign-out-button").style.display = "none";
+      document.getElementById("profile-image-container").style.display = "none";
     }
   }
 
@@ -218,7 +220,7 @@ class CalendarApp {
           const profileImage = response.result.photos[0].url;
           console.log("Profile Image URL:", profileImage);
 
-          // Use the profileImage URL as needed (e.g., set it as the source of an img tag)
+          document.getElementById("profile-image").src = profileImage;
         },
         function (reason) {
           console.error(
@@ -230,7 +232,7 @@ class CalendarApp {
   }
 }
 
-async function createCalendarObject() {
+async function createCalendarApp() {
   // Discovery doc URL for APIs used by the quickstart
   const calendarDoc =
     "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
@@ -255,7 +257,7 @@ async function createCalendarObject() {
 }
 
 async function initializeApp() {
-  await createCalendarObject();
+  await createCalendarApp();
   if (typeof gapi !== undefined) {
     await calendar.gapiLoaded();
     await calendar.gisLoaded();

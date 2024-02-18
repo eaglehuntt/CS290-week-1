@@ -3,18 +3,21 @@
 body {
   font-family: "Poppins", sans-serif;
   min-width: 50%;
+  background-color: #faf9f6;
 }
 
 .top-container {
   justify-content: space-between;
   display: flex;
   align-items: center;
+  min-width: 50%;
 }
 
 #calendar-type-container {
   position: relative;
-  margin-right: 3%;
+  /* margin-right: 3%; */
   width: 20%;
+  margin-left: auto;
 }
 
 .calendar-type {
@@ -30,6 +33,7 @@ body {
 }
 
 button {
+  transition: background-color 0.3s ease, color 0.3s ease;
   font-family: "Poppins", sans-serif;
   padding: 10px 15px;
   border-radius: 15%;
@@ -43,4 +47,48 @@ button {
 
 #heading-container {
   margin-left: 3%;
+}
+
+#profile-image-container {
+  text-align: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+#profile-image {
+  border-radius: 100%;
+  cursor: pointer;
+  border: 1px solid;
+  max-width: 40%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+#sign-in-container {
+  margin-right: 3%;
+  margin-left: 3%;
+}
+
+.button:hover {
+  background-color: blueviolet;
+  color: white;
+}
+
+/* Need to update */
+@media (max-width: 768px) {
+  .top-container {
+    flex-direction: column; /* Stack items vertically on small screens */
+    align-items: flex-start;
+  }
+
+  #calendar-type-container {
+    width: 100%; /* Take up full width on small screens */
+    margin: 10px 0; /* Add some spacing between the containers */
+  }
+
+  #sign-in-container {
+    margin: 10px 0;
+  }
 }
