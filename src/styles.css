@@ -281,7 +281,7 @@ button {
   display: flex;
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 550px;
+  height: 80vh;
   border-radius: 8px;
 }
 
@@ -309,7 +309,6 @@ header h1 {
 }
 tbody {
   position: relative;
-  top: 100px;
 }
 table {
   background: #fff;
@@ -342,7 +341,6 @@ thead th {
 thead {
   z-index: 2;
   background: white;
-  border-bottom: 2px solid #ddd;
 }
 
 tr,
