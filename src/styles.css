@@ -124,6 +124,7 @@ button {
   margin-left: 1%;
   border-radius: 3%;
   display: flex;
+  margin-right: 0%;
 }
 
 .datepicker {
@@ -272,9 +273,7 @@ button {
 
 .weekly-calendar {
   margin: 0 auto;
-  max-width: 1280px;
   min-width: 500px;
-
   border-radius: 8px;
 }
 .wrap {
