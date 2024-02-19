@@ -5,21 +5,15 @@
 
 // TODO(developer): Set to client ID and API key from the Developer Console
 
-const SECRETS = fetch("./secrets.json").then((response) => response.json());
-
-// Discovery doc URL for APIs used by the quickstart
-const DISCOVERY_DOC =
-  "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
-
-const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+const SECRETS = fetch("../secrets.json").then((response) => response.json());
 
 let calendar;
 
-class Calendar {
-  constructor(client_id, api_key, discovery_doc, scopes) {
-    this.client_id = client_id;
-    this.api_key = api_key;
-    this.discovery_doc = discovery_doc;
+class CalendarApp {
+  constructor(clientId, apiKey, discoveryDocs, scopes) {
+    this.clientId = clientId;
+    this.apiKey = apiKey;
+    this.discoveryDocs = discoveryDocs;
     this.scopes = scopes;
 
     this.tokenClient;
@@ -126,15 +120,14 @@ class Calendar {
 
   gapiLoaded() {
     gapi.load("client", this.initializeGapiClient.bind(this));
-    document.getElementById("authorize_button").style.visibility = "hidden";
-    document.getElementById("signout_button").style.visibility = "hidden";
+    document.getElementById("sign-in-button").style.display = "none";
   }
 
   async initializeGapiClient() {
     const secrets = await SECRETS;
     await gapi.client.init({
       apiKey: secrets.api_key,
-      discoveryDocs: [await this.discovery_doc],
+      discoveryDocs: await this.discoveryDocs,
     });
     this.gapiInited = true;
     this.maybeEnableButtons();
@@ -142,7 +135,7 @@ class Calendar {
 
   async gisLoaded() {
     this.tokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: await this.client_id,
+      client_id: await this.clientId,
       scope: await this.scopes,
       callback: "", // defined later
     });
@@ -152,7 +145,9 @@ class Calendar {
 
   maybeEnableButtons() {
     if (this.gapiInited && this.gisInited) {
-      document.getElementById("authorize_button").style.visibility = "visible";
+      document.getElementById("sign-in-button").style.display = "block";
+      document.getElementById("profile-image-container").style.display = "none";
+      document.getElementById("sign-out-button").style.display = "none";
     }
   }
 
@@ -162,10 +157,13 @@ class Calendar {
         throw resp;
       }
 
-      document.getElementById("signout_button").style.visibility = "visible";
-      document.getElementById("authorize_button").innerText = "Refresh";
+      document.getElementById("profile-image-container").style.display =
+        "block";
+      document.getElementById("sign-in-button").style.display = "none";
 
+      // getting calendar content
       await this.getGoogleCalendarEvents();
+      await this.getProfileImage();
     };
 
     if (gapi.client.getToken() === null) {
@@ -183,9 +181,9 @@ class Calendar {
     if (token !== null) {
       google.accounts.oauth2.revoke(token.access_token);
       gapi.client.setToken("");
-      document.getElementById("content").innerText = "";
-      document.getElementById("authorize_button").innerText = "Authorize";
-      document.getElementById("signout_button").style.visibility = "hidden";
+      //   document.getElementById("content").innerText = "";
+      document.getElementById("sign-in-button").style.display = "block";
+      document.getElementById("profile-image-container").style.display = "none";
     }
   }
 
@@ -207,18 +205,52 @@ class Calendar {
     }
 
     this.calendarEvents = response.result.items;
-    this.setCalendarContent();
+    console.log(this.calendarEvents);
+    //this.setCalendarContent();
+  }
+
+  async getProfileImage() {
+    gapi.client.people.people
+      .get({
+        resourceName: "people/me",
+        personFields: "photos",
+      })
+      .then(
+        function (response) {
+          const profileImage = response.result.photos[0].url;
+          console.log("Profile Image URL:", profileImage);
+
+          document.getElementById("profile-image").src = profileImage;
+        },
+        function (reason) {
+          console.error(
+            "Error getting profile image:",
+            reason.result.error.message
+          );
+        }
+      );
   }
 }
 
 async function createCalendarApp() {
+  // Discovery doc URL for APIs used by the quickstart
+  const calendarDoc =
+    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
+
+  const peopleDoc = "https://people.googleapis.com/$discovery/rest";
+
+  const scopes =
+    "https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/userinfo.profile";
+
   const secrets = await SECRETS;
 
-  calendar = new Calendar(
+  const discoveryDocs = [calendarDoc, peopleDoc];
+
+  calendar = new CalendarApp(
     await secrets.web.client_id,
     await secrets.api_key,
-    DISCOVERY_DOC,
-    SCOPES
+    discoveryDocs,
+    scopes
   );
 
   return calendar;

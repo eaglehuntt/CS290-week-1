@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE-edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <script src="https://apis.google.com/js/api.js" async defer></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+        
+        <script src="script.js"></script>
+
+        <link rel="stylesheet" href="styles.css"></link>
+        
+        <title>Calendar</title>
+    </head>
+    <body>
+        <div class="top-container">
+            <div id="heading-container">
+                <h1 id="heading">Calendar</h1>
+            </div>
+            <header class="title-container">
+                <div class="calendar-title">
+                    <button class="arrow"><i class="material-icons"><</i></button>
+                  <h1 id="current-date-range">DEC 7 - DEC 13 2020</h1>
+                    <button class="arrow"><i class="material-icons">></i></button>
+                </div> 
+            </header>
+
+            <div id="sign-in-container">
+                <button id="sign-in-button" class="button" onclick="calendar.handleAuthClick()">Sign in</button>
+
+                <div id="profile-image-container">
+                    <img id="profile-image"></img>
+                    <button id="sign-out-button" class="button" onclick="calendar.handleSignoutClick()">Sign Out</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-container">
+
+          <!-- Month calendar on the left -->
+            <div id="left-container" class="container">
+    
+                <button class="button" id="create-button">+ Create</button>
+                
+                <!-- Code modified from https://codepen.io/havardob/pen/eYdbewq -->
+    
+                <div class="datepicker">
+                    <div class="datepicker-top">
+                        <div class="month-selector">
+                            <button class="arrow"><i class="material-icons"><</i></button>
+                            <span class="month-name">December 2020</span>
+                            <button class="arrow"><i class="material-icons">></i></button>
+                        </div>
+                    </div>
+                    <div class="datepicker-calendar">
+                        <span class="day">Su</span>
+                        <span class="day">Mo</span>
+                        <span class="day">Tu</span>
+                        <span class="day">We</span>
+                        <span class="day">Th</span>
+                        <span class="day">Fr</span>
+                        <span class="day">Sa</span>
+                        <button class="date faded">30</button>
+                        <button class="date">1</button>
+                        <button class="date">2</button>
+                        <button class="date">3</button>
+                        <button class="date">4</button>
+                        <button class="date">5</button>
+                        <button class="date">6</button>
+                        <button class="date">7</button>
+                        <button class="date">8</button>
+                        <button class="date current-day">9</button>
+                        <button class="date">10</button>
+                        <button class="date">11</button>
+                        <button class="date">12</button>
+                        <button class="date">13</button>
+                        <button class="date">14</button>
+                        <button class="date">15</button>
+                        <button class="date">16</button>
+                        <button class="date">17</button>
+                        <button class="date">18</button>
+                        <button class="date">19</button>
+                        <button class="date">20</button>
+                        <button class="date">21</button>
+                        <button class="date">22</button>
+                        <button class="date">23</button>
+                        <button class="date">24</button>
+                        <button class="date">25</button>
+                        <button class="date">26</button>
+                        <button class="date">27</button>
+                        <button class="date">28</button>
+                        <button class="date">29</button>
+                        <button class="date">30</button>
+                        <button class="date">31</button>
+                        <button class="date faded">1</button>
+                        <button class="date faded">2</button>
+                        <button class="date faded">3</button>
+                    </div>
+                </div>
+    
+            </div>
+    
+            <!-- Week calendary on the right -->
+            <div id="right-container" class="container">
+                <!-- Code modified from https://codepen.io/m0skar/pen/WjBdVW -->
+                <div class="weekly-calendar">
+                    
+                    <div class="outer">
+                  
+                    <table>
+                    <thead>
+                      <tr>
+                        <th class="headcol"></th>
+                        <th>Mon, 18</th>
+                        <th>Tue, 19</th>
+                        <th class="today">Wed, 20</th>
+                        <th>Thu, 21</th>
+                        <th>Fri, 22</th>
+                        <th class="secondary">Sat, 23</th>
+                        <th class="secondary">Sun, 24</th>
+                      </tr>
+                    </thead>
+                    </table>
+                  
+                  <div class="wrap"> 
+                    <table class="offset">
+                      
+                    <tbody>
+                      <tr>
+                        <td class="headcol">12 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">1 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">2 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">3 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">4 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">5 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">6 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">7 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">8 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">9 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">10 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">11 AM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">12 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">1 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">2 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td class="now"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">3 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">4 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><div class="event double"><input id="check" type="checkbox" class="checkbox" /><label for="check"></label>8:30–9:30 Yoga</div></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">5 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">6 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">7 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td><div class="event double"><input id="check" type="checkbox" class="checkbox" /><label for="check"></label>10:00–11:00 Meeting</div></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">8 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">9 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">10 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">11 PM</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </div>
+                  </div>
+            </div>
+        </div>
+
+
+    </body>
+
+
+</html>
