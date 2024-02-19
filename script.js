@@ -211,7 +211,7 @@ class Calendar {
   }
 }
 
-async function createCalendarObject() {
+async function createCalendarApp() {
   const secrets = await SECRETS;
 
   calendar = new Calendar(
@@ -225,7 +225,7 @@ async function createCalendarObject() {
 }
 
 async function initializeApp() {
-  await createCalendarObject();
+  await createCalendarApp();
   if (typeof gapi !== undefined) {
     await calendar.gapiLoaded();
     await calendar.gisLoaded();

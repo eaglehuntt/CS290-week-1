@@ -20,7 +20,13 @@
             <div id="heading-container">
                 <h1 id="heading">Calendar</h1>
             </div>
-            
+            <header>
+                <div class="calendar__title" style="display: flex; justify-content: center; align-items: center">
+                    <button class="arrow"><i class="material-icons"><</i></button>
+                  <h1 class="" style="flex: 1;"><span></span><strong>18 JAN – 24 JAN</strong> 2016</h1>
+                    <button class="arrow"><i class="material-icons">></i></button>
+                </div> 
+            </header>
 
             <div id="sign-in-container">
                 <button id="sign-in-button" class="button" onclick="calendar.handleAuthClick()">Sign in</button>
@@ -97,53 +103,309 @@
             </div>
     
             <div id="right-container" class="container">
-                <div class="times">
-                </div>
-                <div id="week-view-container">
-
-                    <div id="sunday">
-                        <div class="day-view-container">
-                            SUN
-                        </div>
-                        <div class="day-view-date"></div>
-                    </div>
-                    <div id="monday">
-                        <div class="day-view-container">
-                            MON
-                        </div>
-                        <div class="day-view-date"></div>
-                    </div>  
-                    <div id="tuesday">
-                        <div class="day-view-container">
-                            TUES
-                        </div>
-                        <div class="day-view-date"></div>
-                    </div>
-                    <div id="wednesday">
-                        <div class="day-view-container">
-                            WED
-                        </div>
-                        <div class="day-view-date"></div>
-                    </div>
-                    <div id="thursday">
-                        <div class="day-view-container">
-                            THUR
-                        </div>
-                        <div class="day-view-date"></div>
-                    </div>
-                    <div id="friday">
-                        <div class="day-view-container">
-                            FRI
-                        </div>
-                        <div class="day-view-date"></div>
-                    </div>
-                    <div id="saturday">
-                        <div class="day-view-container">
-                            SAT
-                        </div>
-                        <div class="day-view-date"></div>
-                    </div>
-                </div>
+                <!-- Code modified from https://codepen.io/m0skar/pen/WjBdVW -->
+                <div class="weekly-calendar">
+  
+                    
+                    
+                    <div class="outer">
+                  
+                    
+                    <table>
+                    <thead>
+                      <tr>
+                        <th class="headcol"></th>
+                        <th>Mon, 18</th>
+                        <th>Tue, 19</th>
+                        <th class="today">Wed, 20</th>
+                        <th>Thu, 21</th>
+                        <th>Fri, 22</th>
+                        <th class="secondary">Sat, 23</th>
+                        <th class="secondary">Sun, 24</th>
+                      </tr>
+                    </thead>
+                    </table>
+                  
+                  <div class="wrap"> 
+                    <table class="offset">
+                  
+                    <tbody>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">6:00</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">7:00</td>
+                        <td></td>
+                        <td></td>
+                        <td class="past"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td class="now"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">8:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><div class="event double"><input id="check" type="checkbox" class="checkbox" /><label for="check"></label>8:30–9:30 Yoga</div></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">9:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">10:00</td>
+                        <td></td>
+                        <td></td>
+                        <td><div class="event double"><input id="check" type="checkbox" class="checkbox" /><label for="check"></label>10:00–11:00 Meeting</div></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">11:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">12:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">13:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">14:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">15:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">16:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">17:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol">18:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="headcol"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </div>
+                  </div>
+                  </div>
+                  
             </div>
         </div>
 
