@@ -23,7 +23,7 @@
             <header class="title-container">
                 <div class="calendar-title">
                     <button class="arrow"><i class="material-icons"><</i></button>
-                  <h1 id="current-date-range">DEC 7 - DEC 13 2020</h1>
+                  <h1 id="current-date-header"></h1>
                     <button class="arrow"><i class="material-icons">></i></button>
                 </div> 
             </header>
@@ -95,6 +95,13 @@
                         <button class="date">29</button>
                         <button class="date">30</button>
                         <button class="date">31</button>
+                        <button class="date">25</button>
+                        <button class="date">26</button>
+                        <button class="date">27</button>
+                        <button class="date">28</button>
+                        <button class="date">29</button>
+                        <button class="date">30</button>
+                        <button class="date">31</button>
                         <button class="date faded">1</button>
                         <button class="date faded">2</button>
                         <button class="date faded">3</button>
@@ -114,13 +121,15 @@
                     <thead>
                       <tr>
                         <th class="headcol"></th>
-                        <th>Mon, 18</th>
-                        <th>Tue, 19</th>
-                        <th class="today">Wed, 20</th>
-                        <th>Thu, 21</th>
-                        <th>Fri, 22</th>
-                        <th class="secondary">Sat, 23</th>
-                        <th class="secondary">Sun, 24</th>
+                        <!-- class="today" will highlight today's date -->
+                        <!-- class="secondary" will dim out days that have not happened yet -->
+                        <th id="Sun">Sun, 00</th>
+                        <th id="Mon">Mon, 00</th>
+                        <th id="Tue">Tue, 00</th>
+                        <th id="Wed">Wed, 00</th>
+                        <th id="Thu">Thu, 00</th>
+                        <th id="Fri">Fri, 00</th>
+                        <th id="Sat">Sat, 00</th>
                       </tr>
                     </thead>
                     </table>

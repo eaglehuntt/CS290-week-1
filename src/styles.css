@@ -43,7 +43,7 @@ body {
   align-items: center;
 }
 
-#current-date-range {
+#current-date-header {
   flex: 1;
 }
 .calendar-type {
@@ -487,11 +487,12 @@ tr td:nth-child(3),
 }
 
 .today {
-  color: red;
+  color: var(--c-theme-primary);
 }
 
 .now {
-  box-shadow: 0px -1px 0px 0px red;
+  box-shadow: 0px -1px 0px 0px var(--c-theme-primary);
+  z-index: 9999;
 }
 
 .icon {

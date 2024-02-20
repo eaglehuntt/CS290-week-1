@@ -13,6 +13,7 @@ class CalendarApp {
   constructor(clientId, apiKey, discoveryDocs, scopes) {
     this.clientId = clientId;
     this.apiKey = apiKey;
+    this.allCalendarEvents;
     this.discoveryDocs = discoveryDocs;
     this.scopes = scopes;
 
@@ -20,42 +21,65 @@ class CalendarApp {
     this.gapiInited = false;
     this.gisInited = false;
 
-    this.days = ["sun", "mon", "tues", "wed", "thur", "fri", "sat"];
-    this.dates = [];
-
-    this.content = {
-      sun: [],
-      mon: [],
-      tues: [],
-      wed: [],
-      thur: [],
-      fri: [],
-      sat: [],
-    };
+    this.days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    this.currentDate = new Date(); // actual current date (will not change)
   }
 
-  getCalendarDates() {
-    this.currentDate = new Date(); // get current date
-    //console.log(this.currentDate);
-    let currentDate2 = new Date();
+  async initializeApp() {
+    // test dates: new Date("2024-02-01")
+    let currentDate = new Date(); // actual current date (will not change)
+    this.setCalendarContent(currentDate);
 
-    // make sure to test with time or else buggy : "2024-01-22T08:00:00"
-
-    const firstDateOfTheWeek = currentDate2.getDate() - currentDate2.getDay(); // day of the month - the day of the week
-
-    const startOfWeek = new Date(
-      currentDate2.setDate(firstDateOfTheWeek)
-    ).toUTCString();
-
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(startOfWeek);
-      date.setDate(date.getDate() + i);
-      this.dates[i] = date;
+    if (typeof gapi !== undefined) {
+      await this.gapiLoaded();
+      await this.gisLoaded();
+    } else {
+      console.error("Google API script not loaded.");
     }
   }
 
+  getState(date) {
+    const getStartOfWeek = (date) => {
+      const dateObject = date.getDate() - date.getDay(); // day of the month - the day of the week
+      const dateNumber = new Date(date.setDate(dateObject)).toUTCString();
+
+      return {
+        dateNumber: dateNumber,
+        dateObject: dateObject,
+      };
+    };
+
+    let weeklyDates = [];
+    let monthlyDates = [];
+    let currentDate = new Date(date);
+    let content = this.getCalendarContent();
+
+    // start of week is a date object representing the Sunday before whichever date is given
+
+    const startOfWeek = getStartOfWeek(currentDate);
+
+    // const firstDateOfMonth = new Date(
+    //   currentDate.getFullYear(),
+    //   currentDate.getMonth(),
+    //   1
+    // );
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(startOfWeek.dateNumber);
+      date.setDate(date.getDate() + i);
+      weeklyDates[i] = date;
+    }
+
+    return {
+      startOfWeek: startOfWeek,
+      weeklyDates: weeklyDates,
+      monthlyDates: monthlyDates,
+      content: content,
+    };
+  }
+
   getCalendarContent() {
-    const isEventInWeek = (date1, date2) => {
+    const isEventInDay = (date1, date2) => {
       const trimmedDate1 = new Date(date1);
       trimmedDate1.setHours(0, 0, 0, 0);
 
@@ -65,60 +89,97 @@ class CalendarApp {
       return trimmedDate1.getTime() === trimmedDate2.getTime();
     };
 
-    for (let i = 0; i < 7; i++) {
-      const date = this.dates[i];
-      for (const event of this.calendarEvents) {
-        let eventDate = new Date(event.start.dateTime);
-        if (isEventInWeek(eventDate, date)) {
-          this.content[this.days[i]].push(event);
+    let content = {
+      Sun: [],
+      Mon: [],
+      Tues: [],
+      Wed: [],
+      Thur: [],
+      Fri: [],
+      Sat: [],
+    };
+
+    if (this.allCalendarEvents == undefined) {
+      return content;
+    } else {
+      for (let i = 0; i < 7; i++) {
+        const date = this.state.weeklyDates[i];
+        for (const event of this.allCalendarEvents) {
+          let eventDate = new Date(event.start.dateTime);
+          if (isEventInDay(eventDate, date)) {
+            content[this.days[i]].push(event);
+          }
         }
       }
+      return content;
     }
   }
 
-  setCalendarContent() {
-    this.getCalendarDates();
-    this.getCalendarContent();
+  setHeader() {
+    const currentDateHeader = document.getElementById("current-date-header");
+    let startOfWeek = this.state.weeklyDates[0].toDateString();
+    let endOfWeek = this.state.weeklyDates[6].toDateString();
+
+    startOfWeek = startOfWeek.substring(0, startOfWeek.length - 4);
+    endOfWeek = endOfWeek.substring(0, endOfWeek.length - 4);
+
+    startOfWeek = startOfWeek.substring(4);
+    endOfWeek = endOfWeek.substring(4);
+
+    let currentYear = this.state.weeklyDates[0].getFullYear();
+
+    currentDateHeader.innerText = `${startOfWeek} - ${endOfWeek} ${currentYear}`;
+  }
+
+  setMonthName() {
+    const monthName = document.getElementsByClassName("month-name")[0];
+    let month = this.state.weeklyDates[0].toLocaleString("default", {
+      month: "long",
+    });
+    let year = this.state.weeklyDates[0].getFullYear();
+    monthName.innerText = `${month} ${year}`;
+  }
+
+  setWeekView(startOfWeek) {}
+
+  setCalendarContent(date) {
+    console.log("setting calendar content");
+
+    this.state = this.getState(date);
+    this.setHeader();
+    this.setMonthName();
+
+    console.log(this.state.content);
 
     for (let i = 0; i < 7; i++) {
       const day = this.days[i];
-      const events = this.content[day];
-
       const dayElement = document.getElementById(day);
-      dayElement.innerHTML = "";
 
-      const dateElement = document.createElement("div");
-      dateElement.classList.add("date");
-      dateElement.innerText = this.dates[i].getDate();
+      // Set weekly table
 
-      if (day == this.days[this.currentDate.getDay()]) {
+      // Update the weekly table's day elements to "Day, Date"
+      dayElement.innerText = `${day}, ${this.state.weeklyDates[i].getDate()}`;
+
+      if (this.state.weeklyDates[i].getDay() == this.currentDate.getDay()) {
         dayElement.classList.add("today");
       }
 
-      dayElement.appendChild(dateElement);
+      // TODO: Insert events into the weekly table
+      const events = this.state.content[day];
+    }
 
-      for (const event of events) {
-        const eventElement = document.createElement("div");
-        eventElement.classList.add("event");
+    // Set monthly table
+    let monthlyDateElements = document.getElementsByClassName("date");
+    let monthlyDate = this.state.firstDateOfMonth;
 
-        // eventElement.innerText = event.summary;
-        // eventElement.innerText = event.start;
-        // eventElement.innerText = event.end;
-
-        // if (event.description != undefined) {
-        //   eventElement.innerText = event.description;
-        // } else {
-        //   eventElement.innerText = event.summary;
-        // }
-
-        eventElement.innerText = event.summary;
-
-        dayElement.appendChild(eventElement);
-      }
+    for (let i = 0; i < 42; i++) {
+      const date = monthlyDateElements[i];
+      date.innerText = monthlyDate.getDay();
+      monthlyDate++;
     }
   }
 
-  gapiLoaded() {
+  async gapiLoaded() {
     gapi.load("client", this.initializeGapiClient.bind(this));
     document.getElementById("sign-in-button").style.display = "none";
   }
@@ -195,7 +256,7 @@ class CalendarApp {
         timeMin: new Date().toISOString(),
         showDeleted: false,
         singleEvents: true,
-        maxResults: 10,
+        maxResults: 2500,
         orderBy: "startTime",
       };
       response = await gapi.client.calendar.events.list(request);
@@ -204,9 +265,10 @@ class CalendarApp {
       return;
     }
 
-    this.calendarEvents = response.result.items;
-    console.log(this.calendarEvents);
-    //this.setCalendarContent();
+    this.allCalendarEvents = response.result.items;
+    console.log(this.allCalendarEvents);
+
+    this.setCalendarContent();
   }
 
   async getProfileImage() {
@@ -252,18 +314,12 @@ async function createCalendarApp() {
     discoveryDocs,
     scopes
   );
-
   return calendar;
 }
 
 async function initializeApp() {
-  await createCalendarApp();
-  if (typeof gapi !== undefined) {
-    await calendar.gapiLoaded();
-    await calendar.gisLoaded();
-  } else {
-    console.error("Google API script not loaded.");
-  }
+  calendar = await createCalendarApp();
+  await calendar.initializeApp();
 }
 
 initializeApp(calendar);
