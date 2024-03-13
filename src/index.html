@@ -23,7 +23,7 @@
             <header class="title-container">
                 <div class="calendar-title">
                     <button class="arrow"><i class="material-icons"><</i></button>
-                  <h1 id="current-date-range">DEC 7 - DEC 13 2020</h1>
+                  <h1 id="current-date-header"></h1>
                     <button class="arrow"><i class="material-icons">></i></button>
                 </div> 
             </header>
@@ -32,7 +32,7 @@
                 <button id="sign-in-button" class="button" onclick="calendar.handleAuthClick()">Sign in</button>
 
                 <div id="profile-image-container">
-                    <img id="profile-image"></img>
+                    <img id="profile-image" onclick="calendar.handleSignoutClick()"></img>
                     <button id="sign-out-button" class="button" onclick="calendar.handleSignoutClick()">Sign Out</button>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                         <button class="date">6</button>
                         <button class="date">7</button>
                         <button class="date">8</button>
-                        <button class="date current-day">9</button>
+                        <button class="date">9</button>
                         <button class="date">10</button>
                         <button class="date">11</button>
                         <button class="date">12</button>
@@ -88,6 +88,13 @@
                         <button class="date">22</button>
                         <button class="date">23</button>
                         <button class="date">24</button>
+                        <button class="date">25</button>
+                        <button class="date">26</button>
+                        <button class="date">27</button>
+                        <button class="date">28</button>
+                        <button class="date">29</button>
+                        <button class="date">30</button>
+                        <button class="date">31</button>
                         <button class="date">25</button>
                         <button class="date">26</button>
                         <button class="date">27</button>
@@ -114,13 +121,15 @@
                     <thead>
                       <tr>
                         <th class="headcol"></th>
-                        <th>Mon, 18</th>
-                        <th>Tue, 19</th>
-                        <th class="today">Wed, 20</th>
-                        <th>Thu, 21</th>
-                        <th>Fri, 22</th>
-                        <th class="secondary">Sat, 23</th>
-                        <th class="secondary">Sun, 24</th>
+                        <!-- class="today" will highlight today's date -->
+                        <!-- class="secondary" will dim out days that have not happened yet -->
+                        <th id="Sun">Sun, 00</th>
+                        <th id="Mon">Mon, 00</th>
+                        <th id="Tue">Tue, 00</th>
+                        <th id="Wed">Wed, 00</th>
+                        <th id="Thu">Thu, 00</th>
+                        <th id="Fri">Fri, 00</th>
+                        <th id="Sat">Sat, 00</th>
                       </tr>
                     </thead>
                     </table>
@@ -129,245 +138,245 @@
                     <table class="offset">
                       
                     <tbody>
-                      <tr>
+                      <tr id="12am">
                         <td class="headcol">12 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="1am">
                         <td class="headcol">1 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="2am">
                         <td class="headcol">2 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="3am">
                         <td class="headcol">3 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="4am">
                         <td class="headcol">4 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="5am">
                         <td class="headcol">5 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="6am">
                         <td class="headcol">6 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="7am">
                         <td class="headcol">7 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="8am">
                         <td class="headcol">8 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="9am">
                         <td class="headcol">9 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="10am">
                         <td class="headcol">10 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="11am">
                         <td class="headcol">11 AM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="12am">
                         <td class="headcol">12 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="1pm">
                         <td class="headcol">1 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="past"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="2pm">
                         <td class="headcol">2 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td class="now"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="3pm">
                         <td class="headcol">3 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="4pm">
                         <td class="headcol">4 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event double"><input id="check" type="checkbox" class="checkbox" /><label for="check"></label>8:30–9:30 Yoga</div></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon"></td>
+                        <td class="Tue"></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="5pm">
                         <td class="headcol">5 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="6pm">
                         <td class="headcol">6 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="7pm">
                         <td class="headcol">7 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td><div class="event double"><input id="check" type="checkbox" class="checkbox" /><label for="check"></label>10:00–11:00 Meeting</div></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="8pm">
                         <td class="headcol">8 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="9pm">
                         <td class="headcol">9 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="10pm">
                         <td class="headcol">10 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
-                      <tr>
+                      <tr id="11pm">
                         <td class="headcol">11 PM</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="Sun"></td>
+                        <td class="Mon" ></td>
+                        <td class="Tue" ></td>
+                        <td class="Wed" ></td>
+                        <td class="Thu" ></td>
+                        <td class="Fri" ></td>
+                        <td class="Sat" ></td>
                       </tr>
                     </tbody>
                   </table>
