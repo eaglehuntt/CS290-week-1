@@ -25,30 +25,33 @@ class CalendarApp {
     this.currentDate = new Date(); // actual current date (will not change)
   }
 
-  async initializeApp() {
+  async initializeCalendarApp() {
     // test dates: new Date("2024-02-01")
     let currentDate = new Date(); // actual current date (will not change)
-    this.setCalendarContent(currentDate);
 
     if (typeof gapi !== undefined) {
+      console.log("gapi undefined");
       await this.gapiLoaded();
       await this.gisLoaded();
     } else {
       console.error("Google API script not loaded.");
     }
+    this.setCalendarContent(currentDate);
   }
 
-  getState(date) {
-    const getStartOfWeek = (date) => {
-      const dateObject = date.getDate() - date.getDay(); // day of the month - the day of the week
-      const dateNumber = new Date(date.setDate(dateObject)).toUTCString();
+  getStartOfWeek = (date) => {
+    // returns an object containing the sunday of the week (start of week)
 
-      return {
-        dateNumber: dateNumber,
-        dateObject: dateObject,
-      };
+    const dateNumber = date.getDate() - date.getDay(); // day of the month - the day of the week
+    const dateObject = new Date(date.setDate(dateNumber)).toString();
+
+    return {
+      dateObject: dateObject,
+      dateNumber: dateNumber,
     };
+  };
 
+  getState(date) {
     let weeklyDates = [];
     let monthlyDates = [];
     let currentDate = new Date(date);
@@ -56,22 +59,22 @@ class CalendarApp {
 
     // start of week is a date object representing the Sunday before whichever date is given
 
-    const startOfWeek = getStartOfWeek(currentDate);
+    const startOfWeek = this.getStartOfWeek(currentDate);
 
-    // const firstDateOfMonth = new Date(
-    //   currentDate.getFullYear(),
-    //   currentDate.getMonth(),
-    //   1
-    // );
+    let startOfCalendar = new Date(date);
+    startOfCalendar.setDate(0);
+
+    startOfCalendar = this.getStartOfWeek(startOfCalendar);
 
     for (let i = 0; i < 7; i++) {
-      const date = new Date(startOfWeek.dateNumber);
+      const date = new Date(startOfWeek.dateObject);
       date.setDate(date.getDate() + i);
       weeklyDates[i] = date;
     }
 
     return {
-      startOfWeek: startOfWeek,
+      startOfWeek: startOfWeek.dateObject,
+      startOfCalendar: startOfCalendar.dateObject,
       weeklyDates: weeklyDates,
       monthlyDates: monthlyDates,
       content: content,
@@ -92,9 +95,9 @@ class CalendarApp {
     let content = {
       Sun: [],
       Mon: [],
-      Tues: [],
+      Tue: [],
       Wed: [],
-      Thur: [],
+      Thu: [],
       Fri: [],
       Sat: [],
     };
@@ -102,10 +105,18 @@ class CalendarApp {
     if (this.allCalendarEvents == undefined) {
       return content;
     } else {
+      console.log(`state:`);
+      console.log(this.state);
+
+      // We want to build the content object
       for (let i = 0; i < 7; i++) {
         const date = this.state.weeklyDates[i];
+        console.log(date);
+
         for (const event of this.allCalendarEvents) {
           let eventDate = new Date(event.start.dateTime);
+          console.log(content[this.days[i]]);
+          console.log(this.days[i]);
           if (isEventInDay(eventDate, date)) {
             content[this.days[i]].push(event);
           }
@@ -143,40 +154,121 @@ class CalendarApp {
   setWeekView(startOfWeek) {}
 
   setCalendarContent(date) {
-    console.log("setting calendar content");
-
     this.state = this.getState(date);
     this.setHeader();
     this.setMonthName();
-
-    console.log(this.state.content);
 
     for (let i = 0; i < 7; i++) {
       const day = this.days[i];
       const dayElement = document.getElementById(day);
 
-      // Set weekly table
-
-      // Update the weekly table's day elements to "Day, Date"
       dayElement.innerText = `${day}, ${this.state.weeklyDates[i].getDate()}`;
 
       if (this.state.weeklyDates[i].getDay() == this.currentDate.getDay()) {
         dayElement.classList.add("today");
       }
 
-      // TODO: Insert events into the weekly table
       const events = this.state.content[day];
+      if (events) {
+        console.log("EVENTS");
+        this.populateEventsInTable(day, events);
+      }
     }
 
-    // Set monthly table
     let monthlyDateElements = document.getElementsByClassName("date");
-    let monthlyDate = this.state.firstDateOfMonth;
+    let monthlyDate = new Date(this.state.startOfCalendar);
 
     for (let i = 0; i < 42; i++) {
       const date = monthlyDateElements[i];
-      date.innerText = monthlyDate.getDay();
-      monthlyDate++;
+      date.innerText = monthlyDate.getDate();
+
+      if (monthlyDate.getMonth() != this.currentDate.getMonth()) {
+        date.classList.add("faded");
+      } else if (monthlyDate.getDate() == this.currentDate.getDate()) {
+        date.classList.add("current-day");
+      }
+
+      monthlyDate.setDate(monthlyDate.getDate() + 1);
     }
+  }
+
+  populateEventsInTable(day, events) {
+    const timeMapping = {
+      "00:00": 0,
+      "01:00": 1,
+      "02:00": 2,
+      "03:00": 3,
+      "04:00": 4,
+      "05:00": 5,
+      "06:00": 6,
+      "07:00": 7,
+      "08:00": 8,
+      "09:00": 9,
+      "10:00": 10,
+      "11:00": 11,
+      "12:00": 12,
+      "13:00": 13,
+      "14:00": 14,
+      "15:00": 15,
+      "16:00": 16,
+      "17:00": 17,
+      "18:00": 18,
+      "19:00": 19,
+      "20:00": 20,
+      "21:00": 21,
+      "22:00": 22,
+      "23:00": 23,
+    };
+
+    for (const event of events) {
+      console.log("Event:", event);
+
+      const startTime = this.roundTime(event.start.dateTime);
+      console.log("StartTime:", startTime);
+
+      const hour = startTime.getHours();
+      const minutes = startTime.getMinutes();
+      const key = `${hour}:${minutes < 10 ? "0" : ""}${minutes}`;
+      const dateIndex = startTime.getDay();
+
+      const timeId = timeMapping[key];
+      const dayId = this.days[dateIndex];
+
+      console.log("timeId:", timeId);
+      console.log("dayId:", dayId);
+
+      // Check if the timeId exists before appending the event
+      if (timeId !== undefined) {
+        const times = document.getElementsByClassName(dayId);
+        const cell = times[timeId];
+
+        if (cell) {
+          const eventDiv = document.createElement("div");
+          eventDiv.className = "event";
+          eventDiv.innerText = event.summary;
+          cell.appendChild(eventDiv);
+        } else {
+          console.error(
+            `Cell not found for day ${dayId} and eventId ${timeId}`
+          );
+        }
+      } else {
+        console.error("EventId is undefined or null");
+      }
+    }
+  }
+
+  roundTime(date) {
+    const roundedDate = new Date(date);
+
+    // Round to the nearest hour
+    const minutes = roundedDate.getMinutes();
+    const roundedMinutes = Math.round(minutes / 60) * 60;
+    roundedDate.setMinutes(roundedMinutes);
+
+    console.log("Rounded Date:", roundedDate);
+
+    return roundedDate;
   }
 
   async gapiLoaded() {
@@ -205,7 +297,9 @@ class CalendarApp {
   }
 
   maybeEnableButtons() {
+    // console.log("maybe enable buttons");
     if (this.gapiInited && this.gisInited) {
+      // console.log("gapi init");
       document.getElementById("sign-in-button").style.display = "block";
       document.getElementById("profile-image-container").style.display = "none";
       document.getElementById("sign-out-button").style.display = "none";
@@ -250,10 +344,13 @@ class CalendarApp {
 
   async getGoogleCalendarEvents() {
     let response;
+    let minDate = new Date();
+    minDate.setDate(minDate.getDate() - 6); // in case it is saturday, we want to be able to have events populate from Sunday - Friday
+
     try {
       const request = {
         calendarId: "primary",
-        timeMin: new Date().toISOString(),
+        timeMin: minDate.toISOString(),
         showDeleted: false,
         singleEvents: true,
         maxResults: 2500,
@@ -266,9 +363,10 @@ class CalendarApp {
     }
 
     this.allCalendarEvents = response.result.items;
-    console.log(this.allCalendarEvents);
 
-    this.setCalendarContent();
+    // FIX: This is a temp solution
+    const curr = new Date();
+    this.setCalendarContent(curr);
   }
 
   async getProfileImage() {
@@ -319,7 +417,7 @@ async function createCalendarApp() {
 
 async function initializeApp() {
   calendar = await createCalendarApp();
-  await calendar.initializeApp();
+  await calendar.initializeCalendarApp();
 }
 
-initializeApp(calendar);
+initializeApp();
